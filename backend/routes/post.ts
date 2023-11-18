@@ -82,4 +82,19 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
+// 전체 글 개수 확인
+router.get("/count", async (req, res) => {
+  try {
+    const posts = await client.post.findMany();
+
+    return res.json({ count: posts.length });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Server Error.",
+    });
+  }
+});
 export default router; 

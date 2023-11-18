@@ -5,6 +5,7 @@ import Main from "./pages/main";
 import SignIn from "./pages/Signin";
 import Signup from "./pages/Siginup";
 import Create from "./pages/create";
+import Detail from "./pages/detail";
 
 const App: FC = () => {
   return (
@@ -14,7 +15,7 @@ const App: FC = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/:postId" element={<Main />} />
+        <Route path="/:postId" element={<Detail />} />
       </Routes>
     </BrowserRouter>
   );
