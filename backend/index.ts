@@ -1,10 +1,20 @@
 import express, { Express } from "express";
+import cors from "cors";
 
 const app : Express = express();
-const port : number = +process.env.PORT! || 3010;
+const port : number = +process.env.PORT! || 3020;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended : true }));
+app.use(
+    cors({
+        origin: process.env.FRONT_URL,
+        credentials : true,
+    })
+);
 
 app.get('/', (req, res) => {
-    res.send("Hello, Express");
+    res.send("Hello, Express!!");
 });
 
 app.listen(port, () => {
