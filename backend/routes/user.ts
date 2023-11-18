@@ -2,6 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { verifyToken } from "./auth";
 
 const router = express.Router();
 
@@ -18,13 +19,13 @@ router.post('/', async(req,res) => {
             });
         } 
 
-        const existUser = await client.user.findUnique({
+        const user = await client.user.findUnique({
             where : {
                 account,
             },
         });
 
-        if(existUser) {
+        if(user) {
             return res.status(400).json({
                 message : "Already exist user.",
             });
@@ -32,11 +33,11 @@ router.post('/', async(req,res) => {
         
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        const user = await client.user.create({
+        await client.user.create({
             data : {
                 account,
                 password : hashedPassword,
-            },
+            }//,
         });
 
         const token = jwt.sign({account}, process.env.JWT_SECRET!);
@@ -46,7 +47,22 @@ router.post('/', async(req,res) => {
         console.error(error);
         
         return res.status(500).json({
-            message : "Server error"
+            message : "Server error."
+        });
+    }
+});
+
+// user checker
+router.get("/", verifyToken, async (req : any, res) => {
+    try {
+        const { account } = req.user;
+
+        return res.json({account});
+    } catch (error) {
+        console.error(error);
+        
+        return res.status(500).json({
+            message : "Server error."
         });
     }
 });
