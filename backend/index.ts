@@ -6,7 +6,7 @@ import authRouter from "./routes/auth";
 import postRouter from "./routes/post";
 
 const app : Express = express();
-const port : number = +process.env.PORT! || 3020;
+const port : number = +process.env.PORT! || 3010;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended : true }));
